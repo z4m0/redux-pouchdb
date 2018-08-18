@@ -77,28 +77,35 @@ const persistentArrayReducer = (storeGetter, db, reducerName) => reducer => {
       action.doc
     ) {
       // console.log('action', action)
+      let found = false
       lastState = state.map(item => {
         if (
           equalsOmittingDocProps(item, action.doc) ||
           item._id === action.doc._id
         ) {
+          found = true
           return action.doc
         }
 
         return item
       })
+      if (!found) {
+        lastState.push(action.doc)
+      }
 
       return reducer(lastState, action)
     }
 
     const reducedState = reducer(state, action)
 
+    const inited = isInitialized[reducerName]
+
     const init = async () => {
       const success = await waitAvailability(
         () => isInitialized[reducerName] && isArrayUpToDate(reducerName)
       )
       // console.log('inited', success)
-      if (success && !equals(reducedState, lastState)) {
+      if (inited && success && !equals(reducedState, lastState)) {
         lastState = reducedState
         saveArrayReducer(reducedState)
       }
