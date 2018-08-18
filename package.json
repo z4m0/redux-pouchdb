@@ -2,7 +2,7 @@
   "name": "redux-pouchdb",
   "version": "1.0.0-rc.1",
   "description": "sync store state to pouchdb",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "format": "prettier --write --no-semi --single-quote src/** tests/**",
     "clean": "rimraf lib",
@@ -11,7 +11,7 @@
     "test": "cross-env BABEL_ENV=testing jest"
   },
   "files": [
-    "src/",
+    "lib/",
     "package.json",
     "README.md"
   ],
